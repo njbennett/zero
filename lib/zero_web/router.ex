@@ -18,6 +18,12 @@ defmodule ZeroWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/cards", CardLive.Index, :index
+    live "/cards/new", CardLive.Index, :new
+    live "/cards/:id/edit", CardLive.Index, :edit
+
+    live "/cards/:id", CardLive.Show, :show
+    live "/cards/:id/show/edit", CardLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
