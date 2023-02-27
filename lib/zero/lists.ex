@@ -18,7 +18,9 @@ defmodule Zero.Lists do
 
   """
   def list_cards do
-    Repo.all(Card)
+    query = from c in Card,
+      order_by: [asc: c.inserted_at]
+    Repo.all(query)
   end
 
   @doc """
