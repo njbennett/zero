@@ -15,6 +15,15 @@ defmodule Zero.ListsTest do
       assert Lists.list_cards() == [card]
     end
 
+    test "list_cards/0 returns all cards in the order they were created" do
+      first_time = NaiveDateTime.utc_now()
+      second_time = first_time |> NaiveDateTime.add(1, :second)
+      card2 = card_fixture(%{ inserted_at: second_time })
+      card1 = card_fixture(%{ inserted_at: first_time })
+
+      assert Lists.list_cards() == [card1, card2]
+    end
+
     test "get_card!/1 returns the card with given id" do
       card = card_fixture()
       assert Lists.get_card!(card.id) == card
