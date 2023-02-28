@@ -22,7 +22,7 @@ defmodule ZeroWeb.CardLive.FormComponent do
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:details]} type="textarea" label="Details" />
         <.input field={@form[:victory_condition]} type="textarea" label="Victory Condition" />
-        <.input field={@form[:finish]} type="checkbox" label="Finish" />
+        <.input field={@form[:finished]} type="checkbox" label="Finish" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Card</.button>
         </:actions>

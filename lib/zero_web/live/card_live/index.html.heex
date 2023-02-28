@@ -15,6 +15,7 @@
   <:col :let={{_id, card}} label="Name"><%= card.name %></:col>
   <:col :let={{_id, card}} label="Details"><%= card.details %></:col>
   <:col :let={{_id, card}} label="Victory Condition"><%= card.victory_condition %></:col>
+  <:col :let={{_id, card}} label="Finished?"><%= card.finished %></:col>
   <:action :let={{_id, card}}>
     <div class="sr-only">
       <.link navigate={~p"/cards/#{card}"}>Show</.link>

@@ -14,7 +14,7 @@ defmodule Zero.Lists.Card do
   @doc false
   def changeset(card, attrs) do
     card
-    |> cast(attrs, [:name, :details, :victory_condition, :inserted_at])
+    |> cast(attrs, [:name, :details, :victory_condition, :finished, :inserted_at])
     |> validate_required([:name, :details, :victory_condition])
   end
 end

@@ -7,6 +7,7 @@ defmodule ZeroWeb.CardLiveTest do
   @create_attrs %{details: "some details", name: "some name", victory_condition: "some victory_condition"}
   @update_attrs %{details: "some updated details", name: "some updated name", victory_condition: "some updated victory_condition"}
   @invalid_attrs %{details: nil, name: nil, victory_condition: nil}
+  @finish_attrs %{details: "some details", name: "some name", victory_condition: "some victory_condition", finished: true}
 
   defp create_card(_) do
     card = card_fixture()
@@ -118,10 +119,22 @@ defmodule ZeroWeb.CardLiveTest do
       {:ok, show_live, _html} = live(conn, ~p"/cards/#{card}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-        "Edit Card"
+      "Edit Card"
 
       html = render(show_live)
       assert html =~ "Finish"
+
+      assert_patch(show_live, ~p"/cards/#{card}/show/edit")
+
+      assert show_live
+             |> form("#card-form", card: @finish_attrs)
+             |> render_submit()
+
+      assert_patch(show_live, ~p"/cards/#{card}")
+
+      html = render(show_live)
+      assert html =~ "Finished"
+      assert html =~ "true"
     end
   end
 end
