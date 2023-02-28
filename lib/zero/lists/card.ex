@@ -6,6 +6,7 @@ defmodule Zero.Lists.Card do
     field :details, :string
     field :name, :string
     field :victory_condition, :string
+    field :finished, :boolean, default: false
 
     timestamps()
   end
