@@ -110,4 +110,18 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ "some updated details"
     end
   end
+
+  describe "Edit" do
+    setup [:create_card]
+
+    test "finishes a card", %{conn: conn, card: card} do
+      {:ok, show_live, _html} = live(conn, ~p"/cards/#{card}")
+
+      assert show_live |> element("a", "Edit") |> render_click() =~
+        "Edit Card"
+
+      html = render(show_live)
+      assert html =~ "Finish"
+    end
+  end
 end
