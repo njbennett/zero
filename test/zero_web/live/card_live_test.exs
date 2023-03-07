@@ -24,6 +24,14 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ card.details
     end
 
+    test "hides finished cards", %{conn: conn} do
+      finished_card = card_fixture(%{finished: true, name: "finished card"})
+      {:ok, index_live, _html} = live(conn, ~p"/cards")
+
+      # assert the finished card has the class "hidden"
+      assert index_live |> element("#cards-#{finished_card.id}.hidden") |> has_element?()
+    end
+
     test "saves new card", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, ~p"/cards")
 

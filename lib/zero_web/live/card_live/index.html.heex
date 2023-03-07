@@ -7,7 +7,7 @@
   </:actions>
 </.header>
 
-<.table
+<.filter_table
   id="cards"
   rows={@streams.cards}
   row_click={fn {_id, card} -> JS.navigate(~p"/cards/#{card}") end}
@@ -30,7 +30,7 @@
       Delete
     </.link>
   </:action>
-</.table>
+</.filter_table>
 
 <.modal
   :if={@live_action in [:new, :edit]}

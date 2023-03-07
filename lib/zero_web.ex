@@ -87,6 +87,9 @@ defmodule ZeroWeb do
       import ZeroWeb.CoreComponents
       import ZeroWeb.Gettext
 
+      # Custom UI components
+      import ZeroWeb.ListComponents
+
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
 
