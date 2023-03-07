@@ -1,6 +1,10 @@
 <.header>
   Listing Cards
   <:actions>
+    <.button
+      phx-click={JS.toggle(to: ".finished")}>
+      Show Finished
+      </.button>
     <.link patch={~p"/cards/new"}>
       <.button>New Card</.button>
     </.link>
