@@ -18,6 +18,8 @@ defmodule ZeroWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/palette", PageController, :palette
+
     live "/cards", CardLive.Index, :index
     live "/cards/new", CardLive.Index, :new
     live "/cards/:id/edit", CardLive.Index, :edit

@@ -6,4 +6,8 @@ defmodule ZeroWeb.PageController do
     # so skip the default app layout.
     render(conn, :home, layout: false)
   end
+
+  def palette(conn, _params) do
+    render(conn, :palette)
+  end
 end
