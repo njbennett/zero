@@ -54,10 +54,14 @@ defmodule ZeroWeb.ListComponents do
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class={["group hover:bg-zinc-50", @finished?.(row) && "hidden finished" ]}>
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class={["group hover:bg-zinc-50", @finished?.(row) && "hidden finished" ]}
+            phx-click={@row_click && @row_click.(row)}
+          >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
-              phx-click={@row_click && @row_click.(row)}
                 class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">

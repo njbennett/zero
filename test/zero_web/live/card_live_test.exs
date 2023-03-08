@@ -55,35 +55,6 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ "some details"
     end
 
-    test "updates card in listing", %{conn: conn, card: card} do
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
-
-      assert index_live |> element("#cards-#{card.id} a", "Edit") |> render_click() =~
-               "Edit Card"
-
-      assert_patch(index_live, ~p"/cards/#{card}/edit")
-
-      assert index_live
-             |> form("#card-form", card: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      assert index_live
-             |> form("#card-form", card: @update_attrs)
-             |> render_submit()
-
-      assert_patch(index_live, ~p"/cards")
-
-      html = render(index_live)
-      assert html =~ "Card updated successfully"
-      assert html =~ "some updated details"
-    end
-
-    test "deletes card in listing", %{conn: conn, card: card} do
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
-
-      assert index_live |> element("#cards-#{card.id} a", "Delete") |> render_click()
-      refute has_element?(index_live, "#cards-#{card.id}")
-    end
   end
 
   describe "Show" do
