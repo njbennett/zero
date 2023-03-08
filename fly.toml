@@ -11,6 +11,7 @@ processes = []
 [env]
   PHX_HOST = "zero-solutions.fly.dev"
   PORT = "8080"
+  OTEL_SERVICE_NAME="zero"
 
 [experimental]
   auto_rollback = true
