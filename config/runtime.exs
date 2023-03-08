@@ -113,3 +113,14 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+config :opentelemetry,
+  span_processors: :batch,
+  traces_exporter: :otlp
+
+config :opentelemetry_exporter,
+  otlp_protocol: :http_protobuf,
+  otlp_endpoint: "https://api.honeycomb.io:443",
+  otlp_headers: [
+    {"x-honeycomb-team", System.get_env("HONEYCOMB_API_KEY")},
+  ]

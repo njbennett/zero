@@ -7,6 +7,9 @@ defmodule Zero.Application do
 
   @impl true
   def start(_type, _args) do
+    OpentelemetryPhoenix.setup()
+    OpentelemetryLiveView.setup()
+    OpentelemetryEcto.setup([:zero, :repo])
     children = [
       # Start the Telemetry supervisor
       ZeroWeb.Telemetry,
