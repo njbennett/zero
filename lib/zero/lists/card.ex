@@ -15,6 +15,9 @@ defmodule Zero.Lists.Card do
   def changeset(card, attrs) do
     card
     |> cast(attrs, [:name, :details, :victory_condition, :finished, :inserted_at])
+    |> validate_length(:name, max: 255)
+    |> validate_length(:details, max: 255)
+    |> validate_length(:victory_condition, max: 255)
     |> validate_required([:name, :details, :victory_condition])
   end
 end

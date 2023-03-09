@@ -42,6 +42,21 @@ defmodule Zero.ListsTest do
       assert {:error, %Ecto.Changeset{}} = Lists.create_card(@invalid_attrs)
     end
 
+    test "create_card/1 with :name longer than 255 returns an error" do
+      attrs = %{details: "some details", name: String.duplicate("a", 256), victory_condition: "some victory_condition"}
+      assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
+    end
+
+    test "create_card/1 with :details longer than 255 returns an error" do
+      attrs = %{details: String.duplicate("a", 256), name: "some name", victory_condition: "some victory_condition"}
+      assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
+    end
+
+    test "create_card/1 with :victory_condition longer than 255 returns an error" do
+      attrs = %{details: "some details", name: "some name", victory_condition: String.duplicate("a", 256)}
+      assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
+    end
+
     test "update_card/2 with valid data updates the card" do
       card = card_fixture()
       update_attrs = %{details: "some updated details", name: "some updated name", victory_condition: "some updated victory_condition"}
