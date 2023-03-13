@@ -55,6 +55,35 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ "some details"
     end
 
+    test "broadcasts cards created to other LiveView sessions", %{conn: conn} do
+      # subscribe to a PubSub topic named "cards"
+      ZeroWeb.Endpoint.subscribe("cards")
+
+      card_attrs = %{details: "bees", name: "bees", victory_condition: "bees"}
+
+      {:ok, index_live, _html} = live(conn, ~p"/cards")
+
+      assert index_live |> element("a", "New Card") |> render_click() =~
+               "New Card"
+
+      assert_patch(index_live, ~p"/cards/new")
+
+      assert index_live
+             |> form("#card-form", card: card_attrs)
+             |> render_submit()
+
+      assert_receive %{topic: "cards", event: "saved", payload: %Zero.Lists.Card{}}
+    end
+
+    test "adds a card to the view when it recieves a broadcast", %{conn: conn} do
+      {:ok, index_live, _html} = live(conn, ~p"/cards")
+
+      ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card_fixture(%{name: "broadcasted card"}))
+      _ = :sys.get_state(index_live.pid)
+
+      html = render(index_live)
+      assert html =~ "broadcasted card"
+    end
   end
 
   describe "Show" do

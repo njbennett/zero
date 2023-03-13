@@ -6,6 +6,7 @@ defmodule ZeroWeb.CardLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    ZeroWeb.Endpoint.subscribe("cards")
     {:ok, stream(socket, :cards, Lists.list_cards())}
   end
 
@@ -34,6 +35,11 @@ defmodule ZeroWeb.CardLive.Index do
 
   @impl true
   def handle_info({ZeroWeb.CardLive.FormComponent, {:saved, card}}, socket) do
+    ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card)
+    {:noreply, stream_insert(socket, :cards, card)}
+  end
+
+  def handle_info(%{topic: "cards", event: "saved", payload: card}, socket) do
     {:noreply, stream_insert(socket, :cards, card)}
   end
 
