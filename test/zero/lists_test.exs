@@ -9,6 +9,7 @@ defmodule Zero.ListsTest do
     import Zero.ListsFixtures
 
     @invalid_attrs %{details: nil, name: nil, victory_condition: nil}
+    @valid_attrs %{details: "some details", name: "some name", victory_condition: "some victory_condition", creators: "Edgar Friendly"}
 
     test "list_cards/0 returns all cards" do
       card = card_fixture()
@@ -30,9 +31,7 @@ defmodule Zero.ListsTest do
     end
 
     test "create_card/1 with valid data creates a card" do
-      valid_attrs = %{details: "some details", name: "some name", victory_condition: "some victory_condition", creators: "Edgar Friendly"}
-
-      assert {:ok, %Card{} = card} = Lists.create_card(valid_attrs)
+      assert {:ok, %Card{} = card} = Lists.create_card(@valid_attrs)
       assert card.details == "some details"
       assert card.name == "some name"
       assert card.victory_condition == "some victory_condition"
@@ -44,22 +43,22 @@ defmodule Zero.ListsTest do
     end
 
     test "create_card/1 with :name longer than 255 returns an error" do
-      attrs = %{details: "some details", name: String.duplicate("a", 256), victory_condition: "some victory_condition"}
+      attrs = Map.replace(@valid_attrs, :name, String.duplicate("a", 256))
       assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
     end
 
     test "create_card/1 with :details longer than 255 returns an error" do
-      attrs = %{details: String.duplicate("a", 256), name: "some name", victory_condition: "some victory_condition"}
+      attrs = Map.replace(@valid_attrs, :details, String.duplicate("a", 256))
       assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
     end
 
     test "create_card/1 with :victory_condition longer than 255 returns an error" do
-      attrs = %{details: "some details", name: "some name", victory_condition: String.duplicate("a", 256)}
+      attrs = Map.replace(@valid_attrs, :victory_condition, String.duplicate("a", 256))
       assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
     end
 
     test "create_card/1 with :creators longer than 255 returns an error" do
-      attrs = %{details: "some details", name: "some name", victory_condition: "some victory condition", creators: String.duplicate("a", 256)}
+      attrs = Map.replace(@valid_attrs, :creators, String.duplicate("a", 256))
       assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
     end
 
