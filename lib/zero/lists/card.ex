@@ -20,6 +20,6 @@ defmodule Zero.Lists.Card do
     |> validate_length(:details, max: 255)
     |> validate_length(:victory_condition, max: 255)
     |> validate_length(:creators, max: 255)
-    |> validate_required([:name, :details, :victory_condition])
+    |> validate_required([:name, :details, :victory_condition, :creators])
   end
 end

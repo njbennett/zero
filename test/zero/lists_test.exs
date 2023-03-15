@@ -62,6 +62,11 @@ defmodule Zero.ListsTest do
       assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
     end
 
+    test "create_card/1 requires a creator field" do
+      attrs = Map.replace(@valid_attrs, :creators, nil)
+      assert {:error, %Ecto.Changeset{}} = Lists.create_card(attrs)
+    end
+
     test "update_card/2 with valid data updates the card" do
       card = card_fixture()
       update_attrs = %{details: "some updated details", name: "some updated name", victory_condition: "some updated victory_condition"}

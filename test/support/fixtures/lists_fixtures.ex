@@ -13,7 +13,8 @@ defmodule Zero.ListsFixtures do
       |> Enum.into(%{
         details: "some details",
         name: "some name",
-        victory_condition: "some victory_condition"
+        victory_condition: "some victory_condition",
+        creators: "Some Creator"
       })
       |> Zero.Lists.create_card()
 

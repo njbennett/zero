@@ -20,6 +20,7 @@ defmodule ZeroWeb.CardLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Name" />
+        <.input field={@form[:creators]} type="textarea" label="Creators" />
         <.input field={@form[:details]} type="textarea" label="Details" />
         <.input field={@form[:victory_condition]} type="textarea" label="Victory Condition" />
         <.input field={@form[:finished]} type="checkbox" label="Finish" />
