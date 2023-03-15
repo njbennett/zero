@@ -22,6 +22,7 @@ defmodule ZeroWeb.CardLiveTest do
 
       assert html =~ "Listing Cards"
       assert html =~ card.details
+      assert html =~ card.creators
     end
 
     test "hides finished cards", %{conn: conn} do
