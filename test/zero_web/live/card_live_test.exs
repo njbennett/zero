@@ -25,6 +25,19 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ card.creators
     end
 
+    test "filters cards by creator", %{conn: conn, card: card} do
+      edgar_card = card_fixture(%{creator: "Edgar Friendly"})
+      {:ok, index_live, html} = live(conn, ~p"/cards")
+
+      assert html =~ "Filter by Creator"
+      assert html =~ card.creators
+      assert html =~ edgar_card.creators
+
+      refute index_live
+             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+             |> render_change() =~ card.creators
+    end
+
     test "hides finished cards", %{conn: conn} do
       finished_card = card_fixture(%{finished: true, name: "finished card"})
       {:ok, index_live, _html} = live(conn, ~p"/cards")

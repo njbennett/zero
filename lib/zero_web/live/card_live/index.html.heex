@@ -11,6 +11,12 @@
   </:actions>
 </.header>
 
+<div class="mt-4">
+<.form id="creator-filter-form" phx-change="change_filter">
+<.input label="Filter by Creator" name="creator_filter" value=""/>
+</.form>
+</div>
+
 <.filter_table
   id="cards"
   rows={@list}

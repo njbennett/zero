@@ -9,7 +9,7 @@ defmodule ZeroWeb.CardLive.Index do
     ZeroWeb.Endpoint.subscribe("cards")
     {:ok, socket
       |> assign(:list, Lists.list_cards())
-      |> stream(:cards, Lists.list_cards())}
+      |> assign(:creator, "Edgar")}
   end
 
   @impl true
@@ -43,5 +43,9 @@ defmodule ZeroWeb.CardLive.Index do
 
   def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
     {:noreply, assign(socket, :list, Lists.list_cards())}
+  end
+
+  def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
+    {:noreply, assign(socket, :list, Lists.list_cards(filter))}
   end
 end
