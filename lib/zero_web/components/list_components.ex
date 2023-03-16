@@ -33,12 +33,7 @@ defmodule ZeroWeb.ListComponents do
   slot :action, doc: "the slot for showing user actions in the last table column"
 
   def filter_table(assigns) do
-    assigns =
-      with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
-        assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
-      end
-
-    assigns = assign(assigns, :finished?, fn({_id, item}) -> item.finished end)
+    assigns = assign(assigns, :finished?, fn(item) -> item.finished end)
 
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">

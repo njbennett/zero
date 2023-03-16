@@ -7,7 +7,9 @@ defmodule ZeroWeb.CardLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
-    {:ok, stream(socket, :cards, Lists.list_cards())}
+    {:ok, socket
+      |> assign(:list, Lists.list_cards())
+      |> stream(:cards, Lists.list_cards())}
   end
 
   @impl true
@@ -36,18 +38,10 @@ defmodule ZeroWeb.CardLive.Index do
   @impl true
   def handle_info({ZeroWeb.CardLive.FormComponent, {:saved, card}}, socket) do
     ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card)
-    {:noreply, stream_insert(socket, :cards, card)}
+    {:noreply, assign(socket, :list, Lists.list_cards())}
   end
 
-  def handle_info(%{topic: "cards", event: "saved", payload: card}, socket) do
-    {:noreply, stream_insert(socket, :cards, card)}
-  end
-
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    card = Lists.get_card!(id)
-    {:ok, _} = Lists.delete_card(card)
-
-    {:noreply, stream_delete(socket, :cards, card)}
+  def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
+    {:noreply, assign(socket, :list, Lists.list_cards())}
   end
 end
