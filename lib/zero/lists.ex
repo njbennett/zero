@@ -24,6 +24,22 @@ defmodule Zero.Lists do
   end
 
   @doc """
+  Returns the list of cards, filtered by creator.
+
+  ## Examples
+
+      iex> list_cards("Edgar")
+      [%Card{}, ...]
+
+  """
+  def list_cards(creator_substring) do
+    query = from c in Card,
+      where: like(c.creators, ^"%#{creator_substring}%"),
+      order_by: [asc: c.inserted_at]
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single card.
 
   Raises `Ecto.NoResultsError` if the Card does not exist.
