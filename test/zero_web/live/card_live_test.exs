@@ -59,6 +59,26 @@ defmodule ZeroWeb.CardLiveTest do
       refute html =~ card.creators
     end
 
+    test "persists creator after saving cards", %{conn: conn, card: card} do
+      edgar_card = card_fixture(%{creators: "Edgar Friendly"})
+      {:ok, index_live, _html} = live(conn, ~p"/cards")
+
+      refute index_live
+             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+             |> render_change() =~ card.creators
+
+      assert index_live |> element("a", "New Card") |> render_click() =~
+               "New Card"
+
+      assert index_live
+             |> form("#card-form", card: @create_attrs)
+             |> render_submit()
+
+      html = render(index_live)
+
+      assert html =~ edgar_card.creators
+      refute html =~ card.creators
+    end
 
     test "hides finished cards", %{conn: conn} do
       finished_card = card_fixture(%{finished: true, name: "finished card"})
@@ -119,6 +139,20 @@ defmodule ZeroWeb.CardLiveTest do
 
       html = render(index_live)
       assert html =~ "broadcasted card"
+    end
+
+    test "persists creator filter when it recieves a broadast", %{conn: conn} do
+      {:ok, index_live, _html} = live(conn, ~p"/cards")
+
+      refute index_live
+             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+             |> render_change() =~ "Some Creator"
+
+      ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card_fixture(%{name: "broadcasted card"}))
+      _ = :sys.get_state(index_live.pid)
+
+      html = render(index_live)
+      refute html =~ "broadcasted card"
     end
   end
 

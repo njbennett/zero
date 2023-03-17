@@ -39,11 +39,11 @@ defmodule ZeroWeb.CardLive.Index do
   @impl true
   def handle_info({ZeroWeb.CardLive.FormComponent, {:saved, card}}, socket) do
     ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card)
-    {:noreply, assign(socket, :list, Lists.list_cards())}
+    {:noreply, assign(socket, :list, Lists.list_cards(Filter.creator()))}
   end
 
   def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
-    {:noreply, assign(socket, :list, Lists.list_cards())}
+    {:noreply, assign(socket, :list, Lists.list_cards(Filter.creator()))}
   end
 
   @impl true
