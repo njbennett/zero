@@ -3,13 +3,14 @@ defmodule ZeroWeb.CardLive.Index do
 
   alias Zero.Lists
   alias Zero.Lists.Card
+  alias Zero.Filter
 
   @impl true
   def mount(_params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
     {:ok, socket
-      |> assign(:list, Lists.list_cards())
-      |> assign(:creator, "Edgar")}
+      |> assign(:list, Lists.list_cards(Filter.creator()))
+      |> assign(:creator, Filter.creator())}
   end
 
   @impl true
@@ -47,6 +48,7 @@ defmodule ZeroWeb.CardLive.Index do
 
   @impl true
   def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
+    Filter.creator(filter)
     {:noreply, assign(socket, :list, Lists.list_cards(filter))}
   end
 end

@@ -1,5 +1,6 @@
 defmodule ZeroWeb.CardLiveTest do
   use ZeroWeb.ConnCase
+  alias Zero.Filter
 
   import Phoenix.LiveViewTest
   import Zero.ListsFixtures
@@ -15,7 +16,10 @@ defmodule ZeroWeb.CardLiveTest do
   end
 
   describe "Index" do
-    setup [:create_card]
+    setup do
+      Filter.creator("")
+      create_card(nil)
+    end
 
     test "lists all cards", %{conn: conn, card: card} do
       {:ok, _index_live, html} = live(conn, ~p"/cards")
@@ -26,7 +30,7 @@ defmodule ZeroWeb.CardLiveTest do
     end
 
     test "filters cards by creator", %{conn: conn, card: card} do
-      edgar_card = card_fixture(%{creator: "Edgar Friendly"})
+      edgar_card = card_fixture(%{creators: "Edgar Friendly"})
       {:ok, index_live, html} = live(conn, ~p"/cards")
 
       assert html =~ "Filter by Creator"
@@ -37,6 +41,24 @@ defmodule ZeroWeb.CardLiveTest do
              |> form("#creator-filter-form", %{creator_filter: "Edgar"})
              |> render_change() =~ card.creators
     end
+
+    test "persists creator filter", %{conn: conn, card: card} do
+      edgar_card = card_fixture(%{creators: "Edgar Friendly"})
+      {:ok, index_live, html} = live(conn, ~p"/cards")
+
+      assert html =~ "Filter by Creator"
+      assert html =~ card.creators
+      assert html =~ edgar_card.creators
+
+      refute index_live
+             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+             |> render_change() =~ card.creators
+
+      {:ok, _, html} = live(conn, ~p"/cards")
+      assert html =~ edgar_card.creators
+      refute html =~ card.creators
+    end
+
 
     test "hides finished cards", %{conn: conn} do
       finished_card = card_fixture(%{finished: true, name: "finished card"})
