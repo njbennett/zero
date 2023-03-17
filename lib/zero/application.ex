@@ -20,9 +20,10 @@ defmodule Zero.Application do
       # Start Finch
       {Finch, name: Zero.Finch},
       # Start the Endpoint (http/https)
-      ZeroWeb.Endpoint
+      ZeroWeb.Endpoint,
       # Start a worker by calling: Zero.Worker.start_link(arg)
       # {Zero.Worker, arg}
+      Zero.Filter
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
