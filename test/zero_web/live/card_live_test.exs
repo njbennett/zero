@@ -111,48 +111,44 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ "some details"
     end
 
-    test "broadcasts cards created to other LiveView sessions", %{conn: conn} do
-      # subscribe to a PubSub topic named "cards"
-      ZeroWeb.Endpoint.subscribe("cards")
-
+    test "shows cards created in other LiveView sessions immediately", %{conn: conn} do
       card_attrs = %{details: "bees", name: "bees", victory_condition: "bees", creators: "Bees! Bees!"}
 
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
+      {:ok, live_sender, _html} = live(conn, ~p"/cards")
+      {:ok, live_reciever, _html} = live(conn, ~p"/cards")
 
-      assert index_live |> element("a", "New Card") |> render_click() =~
-               "New Card"
+      live_sender
+      |> element("a", "New Card")
+      |> render_click()
 
-      assert_patch(index_live, ~p"/cards/new")
+      live_sender
+      |> form("#card-form", card: card_attrs)
+      |> render_submit()
 
-      assert index_live
-             |> form("#card-form", card: card_attrs)
-             |> render_submit()
-
-      assert_receive %{topic: "cards", event: "saved", payload: %Zero.Lists.Card{}}
-    end
-
-    test "adds a card to the view when it recieves a broadcast", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
-
-      ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card_fixture(%{name: "broadcasted card"}))
-      _ = :sys.get_state(index_live.pid)
-
-      html = render(index_live)
-      assert html =~ "broadcasted card"
+      html = render(live_reciever)
+      assert html =~ "Bees! Bees!"
     end
 
     test "persists creator filter when it recieves a broadast", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
+      card_attrs = %{details: "bees", name: "bees", victory_condition: "bees", creators: "Bees! Bees!"}
 
-      refute index_live
+      {:ok, live_sender, _html} = live(conn, ~p"/cards")
+      {:ok, live_reciever, _html} = live(conn, ~p"/cards")
+
+      refute live_reciever
              |> form("#creator-filter-form", %{creator_filter: "Edgar"})
-             |> render_change() =~ "Some Creator"
+             |> render_change() =~ "Bees! Bees!"
 
-      ZeroWeb.Endpoint.broadcast_from(self(), "cards", "saved", card_fixture(%{name: "broadcasted card"}))
-      _ = :sys.get_state(index_live.pid)
+      live_sender
+      |> element("a", "New Card")
+      |> render_click()
 
-      html = render(index_live)
-      refute html =~ "broadcasted card"
+      live_sender
+      |> form("#card-form", card: card_attrs)
+      |> render_submit()
+
+      html = render(live_reciever)
+      refute html =~ "Bees! Bees!"
     end
   end
 
