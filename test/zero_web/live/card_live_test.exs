@@ -32,7 +32,14 @@ defmodule ZeroWeb.CardLiveTest do
   end
 
   defp start_index(conn) do
-    live(conn, ~p"/cards")
+    {:ok, index_live, _html} = live(conn, ~p"/cards")
+
+    index_live
+    |> form("#use-as-form", %{use_as: "Edgar"})
+    |> render_change()
+
+    render(index_live)
+    {:ok, index_live, render(index_live)}
   end
 
   describe "Index" do
@@ -103,6 +110,19 @@ defmodule ZeroWeb.CardLiveTest do
       html = render(index_live)
 
       assert html =~ edgar_card.creators
+      refute html =~ card.creators
+    end
+
+    test "has a 'Use As' field", %{conn: conn, card: _card} do
+      {:ok, _index_live, html} = live(conn, ~p"/cards")
+
+      assert html =~ "Use As"
+    end
+
+    test "only shows cards when Use As is filled", %{conn: conn, card: card} do
+      {:ok, _index_live, html} = live(conn, ~p"/cards")
+
+      assert html =~ "Use As"
       refute html =~ card.creators
     end
 

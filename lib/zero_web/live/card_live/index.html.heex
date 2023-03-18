@@ -16,6 +16,12 @@
   </.form>
 </div>
 
+<div class="mt-4">
+  <.form autocomplete="off" for={%{}} id="use-as-form" phx-change="use_as">
+    <.input label="Use As" name="use_as" value="" />
+  </.form>
+</div>
+
 <.filter_table
   id="cards"
   rows={@list}

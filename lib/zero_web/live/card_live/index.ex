@@ -12,7 +12,7 @@ defmodule ZeroWeb.CardLive.Index do
 
     {:ok,
      socket
-     |> assign(:list, Lists.list_cards(Filter.creator()))
+     |> assign(:list, %{})
      |> assign(:creator, Filter.creator())}
   end
 
@@ -61,5 +61,9 @@ defmodule ZeroWeb.CardLive.Index do
   def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
     ZeroWeb.Endpoint.broadcast("creator", "changed", filter)
     {:noreply, socket}
+  end
+
+  def handle_event("use_as", %{"use_as" => _editor}, socket) do
+    {:noreply, assign(socket, :list, Lists.list_cards(Filter.creator()))}
   end
 end
