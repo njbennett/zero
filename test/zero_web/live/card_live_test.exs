@@ -54,8 +54,8 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ edgar_card.creators
 
       index_live
-             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
-             |> render_change() =~ card.creators
+      |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+      |> render_change() =~ card.creators
 
       refute render(index_live) =~ card.creators
     end
@@ -69,8 +69,8 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ edgar_card.creators
 
       index_live
-             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
-             |> render_change() =~ card.creators
+      |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+      |> render_change() =~ card.creators
 
       refute render(index_live) =~ card.creators
 
@@ -84,8 +84,8 @@ defmodule ZeroWeb.CardLiveTest do
       {:ok, index_live, _html} = live(conn, ~p"/cards")
 
       index_live
-             |> form("#creator-filter-form", %{creator_filter: "Edgar"})
-             |> render_change() =~ card.creators
+      |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+      |> render_change() =~ card.creators
 
       refute render(index_live) =~ card.creators
 
@@ -181,6 +181,22 @@ defmodule ZeroWeb.CardLiveTest do
 
       html = render(live_reciever)
       refute html =~ "Bees! Bees!"
+    end
+
+    test "changing a creator filter in one session should change it in all sessions", %{
+      conn: conn
+    } do
+      {:ok, live_sender, _html} = live(conn, ~p"/cards")
+      {:ok, live_reciever, _html} = live(conn, ~p"/cards")
+
+      refute render(live_reciever) =~ "Edgar"
+
+      live_reciever
+      |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+      |> render_change() =~ "Edgar"
+
+      assert render(live_reciever) =~ "Edgar"
+      assert render(live_sender) =~ "Edgar"
     end
   end
 

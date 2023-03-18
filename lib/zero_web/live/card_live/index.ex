@@ -51,7 +51,10 @@ defmodule ZeroWeb.CardLive.Index do
 
   def handle_info(%{topic: "creator", event: "changed", payload: filter}, socket) do
     Filter.creator(filter)
-    {:noreply, assign(socket, :list, Lists.list_cards(filter))}
+
+    {:noreply,
+     assign(socket, :list, Lists.list_cards(filter))
+     |> assign(:creator, filter)}
   end
 
   @impl true
