@@ -8,6 +8,7 @@ defmodule ZeroWeb.CardLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
+    ZeroWeb.Endpoint.subscribe("creator")
 
     {:ok,
      socket
@@ -48,9 +49,14 @@ defmodule ZeroWeb.CardLive.Index do
     {:noreply, assign(socket, :list, Lists.list_cards(Filter.creator()))}
   end
 
-  @impl true
-  def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
+  def handle_info(%{topic: "creator", event: "changed", payload: filter}, socket) do
     Filter.creator(filter)
     {:noreply, assign(socket, :list, Lists.list_cards(filter))}
+  end
+
+  @impl true
+  def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
+    ZeroWeb.Endpoint.broadcast("creator", "changed", filter)
+    {:noreply, socket}
   end
 end

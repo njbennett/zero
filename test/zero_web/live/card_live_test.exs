@@ -53,9 +53,11 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ card.creators
       assert html =~ edgar_card.creators
 
-      refute index_live
+      index_live
              |> form("#creator-filter-form", %{creator_filter: "Edgar"})
              |> render_change() =~ card.creators
+
+      refute render(index_live) =~ card.creators
     end
 
     test "persists creator filter", %{conn: conn, card: card} do
@@ -66,9 +68,11 @@ defmodule ZeroWeb.CardLiveTest do
       assert html =~ card.creators
       assert html =~ edgar_card.creators
 
-      refute index_live
+      index_live
              |> form("#creator-filter-form", %{creator_filter: "Edgar"})
              |> render_change() =~ card.creators
+
+      refute render(index_live) =~ card.creators
 
       {:ok, _, html} = live(conn, ~p"/cards")
       assert html =~ edgar_card.creators
@@ -79,9 +83,11 @@ defmodule ZeroWeb.CardLiveTest do
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})
       {:ok, index_live, _html} = live(conn, ~p"/cards")
 
-      refute index_live
+      index_live
              |> form("#creator-filter-form", %{creator_filter: "Edgar"})
              |> render_change() =~ card.creators
+
+      refute render(index_live) =~ card.creators
 
       assert index_live |> element("a", "New Card") |> render_click() =~
                "New Card"
