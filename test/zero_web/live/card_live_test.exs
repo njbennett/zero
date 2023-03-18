@@ -31,6 +31,10 @@ defmodule ZeroWeb.CardLiveTest do
     %{card: card}
   end
 
+  defp start_index(conn) do
+    live(conn, ~p"/cards")
+  end
+
   describe "Index" do
     setup do
       Filter.creator("")
@@ -38,7 +42,7 @@ defmodule ZeroWeb.CardLiveTest do
     end
 
     test "lists all cards", %{conn: conn, card: card} do
-      {:ok, _index_live, html} = live(conn, ~p"/cards")
+      {:ok, _index_live, html} = start_index(conn)
 
       assert html =~ "Listing Cards"
       assert html =~ card.details
@@ -47,7 +51,7 @@ defmodule ZeroWeb.CardLiveTest do
 
     test "filters cards by creator", %{conn: conn, card: card} do
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})
-      {:ok, index_live, html} = live(conn, ~p"/cards")
+      {:ok, index_live, html} = start_index(conn)
 
       assert html =~ "Filter by Creator"
       assert html =~ card.creators
@@ -62,7 +66,7 @@ defmodule ZeroWeb.CardLiveTest do
 
     test "persists creator filter", %{conn: conn, card: card} do
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})
-      {:ok, index_live, html} = live(conn, ~p"/cards")
+      {:ok, index_live, html} = start_index(conn)
 
       assert html =~ "Filter by Creator"
       assert html =~ card.creators
@@ -74,14 +78,14 @@ defmodule ZeroWeb.CardLiveTest do
 
       refute render(index_live) =~ card.creators
 
-      {:ok, _, html} = live(conn, ~p"/cards")
+      {:ok, _, html} = start_index(conn)
       assert html =~ edgar_card.creators
       refute html =~ card.creators
     end
 
     test "persists creator after saving cards", %{conn: conn, card: card} do
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
+      {:ok, index_live, _html} = start_index(conn)
 
       index_live
       |> form("#creator-filter-form", %{creator_filter: "Edgar"})
@@ -104,14 +108,14 @@ defmodule ZeroWeb.CardLiveTest do
 
     test "hides finished cards", %{conn: conn} do
       finished_card = card_fixture(%{finished: true, name: "finished card"})
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
+      {:ok, index_live, _html} = start_index(conn)
 
       # assert the finished card has the class "hidden"
       assert index_live |> element("#cards-#{finished_card.id}.hidden") |> has_element?()
     end
 
     test "saves new card", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, ~p"/cards")
+      {:ok, index_live, _html} = start_index(conn)
 
       assert index_live |> element("a", "New Card") |> render_click() =~
                "New Card"
@@ -141,8 +145,8 @@ defmodule ZeroWeb.CardLiveTest do
         creators: "Bees! Bees!"
       }
 
-      {:ok, live_sender, _html} = live(conn, ~p"/cards")
-      {:ok, live_reciever, _html} = live(conn, ~p"/cards")
+      {:ok, live_sender, _html} = start_index(conn)
+      {:ok, live_reciever, _html} = start_index(conn)
 
       live_sender
       |> element("a", "New Card")
@@ -164,8 +168,8 @@ defmodule ZeroWeb.CardLiveTest do
         creators: "Bees! Bees!"
       }
 
-      {:ok, live_sender, _html} = live(conn, ~p"/cards")
-      {:ok, live_reciever, _html} = live(conn, ~p"/cards")
+      {:ok, live_sender, _html} = start_index(conn)
+      {:ok, live_reciever, _html} = start_index(conn)
 
       refute live_reciever
              |> form("#creator-filter-form", %{creator_filter: "Edgar"})
@@ -186,8 +190,8 @@ defmodule ZeroWeb.CardLiveTest do
     test "changing a creator filter in one session should change it in all sessions", %{
       conn: conn
     } do
-      {:ok, live_sender, _html} = live(conn, ~p"/cards")
-      {:ok, live_reciever, _html} = live(conn, ~p"/cards")
+      {:ok, live_sender, _html} = start_index(conn)
+      {:ok, live_reciever, _html} = start_index(conn)
 
       refute render(live_reciever) =~ "Edgar"
 
