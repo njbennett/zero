@@ -37,6 +37,16 @@ defmodule Zero.ListsTest do
       assert Lists.list_cards("Edgar") == [edgar_card]
     end
 
+    test "list_cards_as/1 returns cards when 'as' is not nil" do
+      card = card_fixture()
+      assert Lists.list_cards_as("Edgar") == [card]
+    end
+
+    test "list_cards_as/1 returns an empty list when 'as' is an empty string" do
+      card_fixture()
+      assert Lists.list_cards_as("") == []
+    end
+
     test "get_card!/1 returns the card with given id" do
       card = card_fixture()
       assert Lists.get_card!(card.id) == card
