@@ -10,6 +10,7 @@ defmodule Zero.Application do
     OpentelemetryPhoenix.setup()
     OpentelemetryLiveView.setup()
     OpentelemetryEcto.setup([:zero, :repo])
+
     children = [
       # Start the Telemetry supervisor
       ZeroWeb.Telemetry,

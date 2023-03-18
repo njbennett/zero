@@ -10,7 +10,7 @@ defmodule Zero.Filter do
   end
 
   def creator(value) do
-    Agent.update(__MODULE__, fn(_) -> value end)
+    Agent.update(__MODULE__, fn _ -> value end)
     value
   end
 end

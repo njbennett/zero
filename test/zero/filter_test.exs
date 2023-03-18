@@ -3,7 +3,6 @@ defmodule Zero.FilterTest do
   alias Zero.Filter
 
   describe "filter" do
-
     setup do
       {:ok, filter: Filter.creator("")}
     end

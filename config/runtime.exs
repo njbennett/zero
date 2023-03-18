@@ -123,12 +123,12 @@ if System.get_env("HONEYCOMB_API_KEY") do
     otlp_protocol: :http_protobuf,
     otlp_endpoint: "https://api.honeycomb.io:443",
     otlp_headers: [
-      {"x-honeycomb-team", System.get_env("HONEYCOMB_API_KEY")},
+      {"x-honeycomb-team", System.get_env("HONEYCOMB_API_KEY")}
     ]
 else
-# Console Exporter for OpenTelemetry Exporter
-config :opentelemetry, :processors,
-  otel_batch_processor: %{
-    exporter: {:otel_exporter_stdout, []}
-  }
+  # Console Exporter for OpenTelemetry Exporter
+  config :opentelemetry, :processors,
+    otel_batch_processor: %{
+      exporter: {:otel_exporter_stdout, []}
+    }
 end

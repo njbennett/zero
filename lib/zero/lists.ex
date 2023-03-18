@@ -18,8 +18,10 @@ defmodule Zero.Lists do
 
   """
   def list_cards do
-    query = from c in Card,
-      order_by: [asc: c.inserted_at]
+    query =
+      from c in Card,
+        order_by: [asc: c.inserted_at]
+
     Repo.all(query)
   end
 
@@ -33,9 +35,11 @@ defmodule Zero.Lists do
 
   """
   def list_cards(creator_substring) do
-    query = from c in Card,
-      where: like(c.creators, ^"%#{creator_substring}%"),
-      order_by: [asc: c.inserted_at]
+    query =
+      from c in Card,
+        where: like(c.creators, ^"%#{creator_substring}%"),
+        order_by: [asc: c.inserted_at]
+
     Repo.all(query)
   end
 

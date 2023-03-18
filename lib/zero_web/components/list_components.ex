@@ -33,7 +33,7 @@ defmodule ZeroWeb.ListComponents do
   slot :action, doc: "the slot for showing user actions in the last table column"
 
   def filter_table(assigns) do
-    assigns = assign(assigns, :finished?, fn(item) -> item.finished end)
+    assigns = assign(assigns, :finished?, fn item -> item.finished end)
 
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
@@ -52,12 +52,12 @@ defmodule ZeroWeb.ListComponents do
           <tr
             :for={row <- @rows}
             id={@row_id && @row_id.(row)}
-            class={["group hover:bg-zinc-50", @finished?.(row) && "hidden finished" ]}
+            class={["group hover:bg-zinc-50", @finished?.(row) && "hidden finished"]}
             phx-click={@row_click && @row_click.(row)}
           >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
-                class={["relative p-0", @row_click && "hover:cursor-pointer"]}
+              class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
                 <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />

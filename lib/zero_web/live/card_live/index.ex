@@ -8,9 +8,11 @@ defmodule ZeroWeb.CardLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
-    {:ok, socket
-      |> assign(:list, Lists.list_cards(Filter.creator()))
-      |> assign(:creator, Filter.creator())}
+
+    {:ok,
+     socket
+     |> assign(:list, Lists.list_cards(Filter.creator()))
+     |> assign(:creator, Filter.creator())}
   end
 
   @impl true

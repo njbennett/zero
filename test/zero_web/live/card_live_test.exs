@@ -5,10 +5,26 @@ defmodule ZeroWeb.CardLiveTest do
   import Phoenix.LiveViewTest
   import Zero.ListsFixtures
 
-  @create_attrs %{details: "some details", name: "some name", victory_condition: "some victory_condition", creators: "Some Creator"}
-  @update_attrs %{details: "some updated details", name: "some updated name", victory_condition: "some updated victory_condition", creators: "Some Updated Creator"}
+  @create_attrs %{
+    details: "some details",
+    name: "some name",
+    victory_condition: "some victory_condition",
+    creators: "Some Creator"
+  }
+  @update_attrs %{
+    details: "some updated details",
+    name: "some updated name",
+    victory_condition: "some updated victory_condition",
+    creators: "Some Updated Creator"
+  }
   @invalid_attrs %{details: nil, name: nil, victory_condition: nil, creators: nil}
-  @finish_attrs %{details: "some details", name: "some name", victory_condition: "some victory_condition", finished: true, creators: "Some Creator"}
+  @finish_attrs %{
+    details: "some details",
+    name: "some name",
+    victory_condition: "some victory_condition",
+    finished: true,
+    creators: "Some Creator"
+  }
 
   defp create_card(_) do
     card = card_fixture()
@@ -112,7 +128,12 @@ defmodule ZeroWeb.CardLiveTest do
     end
 
     test "shows cards created in other LiveView sessions immediately", %{conn: conn} do
-      card_attrs = %{details: "bees", name: "bees", victory_condition: "bees", creators: "Bees! Bees!"}
+      card_attrs = %{
+        details: "bees",
+        name: "bees",
+        victory_condition: "bees",
+        creators: "Bees! Bees!"
+      }
 
       {:ok, live_sender, _html} = live(conn, ~p"/cards")
       {:ok, live_reciever, _html} = live(conn, ~p"/cards")
@@ -130,7 +151,12 @@ defmodule ZeroWeb.CardLiveTest do
     end
 
     test "persists creator filter when it recieves a broadast", %{conn: conn} do
-      card_attrs = %{details: "bees", name: "bees", victory_condition: "bees", creators: "Bees! Bees!"}
+      card_attrs = %{
+        details: "bees",
+        name: "bees",
+        victory_condition: "bees",
+        creators: "Bees! Bees!"
+      }
 
       {:ok, live_sender, _html} = live(conn, ~p"/cards")
       {:ok, live_reciever, _html} = live(conn, ~p"/cards")
@@ -193,7 +219,7 @@ defmodule ZeroWeb.CardLiveTest do
       {:ok, show_live, _html} = live(conn, ~p"/cards/#{card}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-      "Edit Card"
+               "Edit Card"
 
       html = render(show_live)
       assert html =~ "Finish"
