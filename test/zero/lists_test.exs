@@ -47,6 +47,13 @@ defmodule Zero.ListsTest do
       assert Lists.list_cards_as("") == []
     end
 
+    test "list_cards_as/2 filters the cards it returns by creator" do
+      _standard_card = card_fixture()
+      edgar_card = card_fixture(%{creators: "Edgar Friendly"})
+
+      assert Lists.list_cards_as("Edgar", "Edgar") == [edgar_card]
+    end
+
     test "get_card!/1 returns the card with given id" do
       card = card_fixture()
       assert Lists.get_card!(card.id) == card

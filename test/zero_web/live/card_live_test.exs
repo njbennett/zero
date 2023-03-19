@@ -120,10 +120,13 @@ defmodule ZeroWeb.CardLiveTest do
     end
 
     test "only shows cards when Use As is filled", %{conn: conn, card: card} do
-      {:ok, _index_live, html} = live(conn, ~p"/cards")
+      {:ok, index_live, _html} = start_index(conn)
 
-      assert html =~ "Use As"
-      refute html =~ card.creators
+      index_live
+      |> form("#use-as-form", %{use_as: ""})
+      |> render_change()
+
+      refute render(index_live) =~ card.creators
     end
 
     test "hides finished cards", %{conn: conn} do

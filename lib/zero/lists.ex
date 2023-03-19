@@ -62,6 +62,25 @@ defmodule Zero.Lists do
   end
 
   @doc """
+  Returns the list of cards, unless it's passed ""
+  Then it retruns an empty list.
+  Filters that list by creator.
+
+  ## Examples
+
+  iex> list_cards_as("Edgar", "Edgar")
+  [%Card{}, ...]
+
+  """
+  def list_cards_as(creator, editor) do
+    if editor == "" do
+      []
+    else
+      list_cards(creator)
+    end
+  end
+
+  @doc """
   Gets a single card.
 
   Raises `Ecto.NoResultsError` if the Card does not exist.
