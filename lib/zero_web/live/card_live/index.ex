@@ -6,13 +6,13 @@ defmodule ZeroWeb.CardLive.Index do
   alias Zero.Filter
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
     ZeroWeb.Endpoint.subscribe("creator")
 
     {:ok,
      socket
-     |> assign(:as, "")
+     |> assign(:as, Map.get(params, "use_as"))
      |> assign(:list, Lists.list_cards_as(""))
      |> assign(:creator, Filter.creator())}
   end

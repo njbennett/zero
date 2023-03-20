@@ -129,6 +129,12 @@ defmodule ZeroWeb.CardLiveTest do
       refute render(index_live) =~ card.creators
     end
 
+    test "sets Use As field from params", %{conn: conn} do
+      {:ok, index_live, _html} = live(conn, ~p"/cards?use_as=A%20Single%20Dingo")
+
+      assert render(index_live) =~ "A Single Dingo"
+    end
+
     test "persists Use As value after changing the creator filter", %{conn: conn, card: _card} do
       {:ok, index_live, _html} = start_index(conn)
 
