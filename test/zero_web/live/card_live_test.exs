@@ -35,7 +35,7 @@ defmodule ZeroWeb.CardLiveTest do
     {:ok, index_live, _html} = live(conn, ~p"/cards")
 
     index_live
-    |> form("#use-as-form", %{use_as: "Edgar"})
+    |> form("#use-as-form", %{use_as: "Setup User"})
     |> render_change()
 
     render(index_live)
@@ -127,6 +127,20 @@ defmodule ZeroWeb.CardLiveTest do
       |> render_change()
 
       refute render(index_live) =~ card.creators
+    end
+
+    test "persists Use As value after changing the creator filter", %{conn: conn, card: _card} do
+      {:ok, index_live, _html} = start_index(conn)
+
+      index_live
+      |> form("#use-as-form", %{use_as: "John Spartan"})
+      |> render_change()
+
+      index_live
+      |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+      |> render_change()
+
+      assert render(index_live) =~ "John Spartan"
     end
 
     test "hides finished cards", %{conn: conn} do
