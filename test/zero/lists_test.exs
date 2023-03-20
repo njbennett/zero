@@ -1,5 +1,5 @@
 defmodule Zero.ListsTest do
-  use Zero.DataCase
+  use Zero.DataCase, async: true
 
   alias Zero.Lists
 

@@ -1,5 +1,5 @@
 defmodule ZeroWeb.CardLiveTest do
-  use ZeroWeb.ConnCase
+  use ZeroWeb.ConnCase, async: true
   alias Zero.Filter
 
   import Phoenix.LiveViewTest

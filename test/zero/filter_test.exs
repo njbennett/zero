@@ -1,5 +1,5 @@
 defmodule Zero.FilterTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Zero.Filter
 
   describe "filter" do
