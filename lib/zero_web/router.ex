@@ -26,6 +26,8 @@ defmodule ZeroWeb.Router do
 
     live "/cards/:id", CardLive.Show, :show
     live "/cards/:id/show/edit", CardLive.Show, :edit
+
+    live "/filters", FiltersLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
