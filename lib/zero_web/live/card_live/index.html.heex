@@ -38,7 +38,7 @@
   :if={@live_action in [:new, :edit]}
   id="card-modal"
   show
-  on_cancel={JS.navigate(~p"/cards")}
+  on_cancel={JS.navigate(~p"/cards?use_as_#{@as || ""}")}
 >
   <.live_component
     module={ZeroWeb.CardLive.FormComponent}
@@ -46,6 +46,6 @@
     title={@page_title}
     action={@live_action}
     card={@card}
-    patch={~p"/cards"}
+    patch={~p"/cards?use_as=#{@as || ""}"}
   />
 </.modal>

@@ -173,7 +173,7 @@ defmodule ZeroWeb.CardLiveTest do
              |> form("#card-form", card: @create_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/cards")
+      assert_patch(index_live, ~p"/cards?use_as=Setup+User")
 
       html = render(index_live)
       assert html =~ "Card created successfully"
