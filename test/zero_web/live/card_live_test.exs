@@ -32,14 +32,7 @@ defmodule ZeroWeb.CardLiveTest do
   end
 
   defp start_index(conn) do
-    {:ok, index_live, _html} = live(conn, ~p"/cards")
-
-    index_live
-    |> form("#use-as-form", %{use_as: "Setup User"})
-    |> render_change()
-
-    render(index_live)
-    {:ok, index_live, render(index_live)}
+    live(conn, ~p"/cards?use_as=Setup+User")
   end
 
   describe "Index" do

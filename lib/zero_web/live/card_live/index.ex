@@ -13,8 +13,16 @@ defmodule ZeroWeb.CardLive.Index do
     {:ok,
      socket
      |> assign(:as, Map.get(params, "use_as"))
-     |> assign(:list, Lists.list_cards_as(""))
+     |> assign(:list, get_list(params))
      |> assign(:creator, Filter.creator())}
+  end
+
+  defp get_list(params) do
+    if Map.get(params, "use_as") == nil do
+      Lists.list_cards_as("")
+    else
+      Lists.list_cards_as(Filter.creator(), Map.get(params, "use_as"))
+    end
   end
 
   @impl true
