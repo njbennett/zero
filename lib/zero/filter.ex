@@ -22,4 +22,8 @@ defmodule Zero.Filter do
   def creator_as(as) do
     Agent.get(__MODULE__, &Map.get(&1, as))
   end
+
+  def all_creators do
+    Agent.get(__MODULE__, & &1)
+  end
 end

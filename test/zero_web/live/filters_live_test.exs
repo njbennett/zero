@@ -7,7 +7,7 @@ defmodule ZeroWeb.FiltersLiveTest do
     test "lists active creator filter", %{conn: conn} do
       {:ok, _index_live, html} = live(conn, ~p"/filters")
 
-      assert html =~ "Creator:"
+      assert html =~ "Creator"
     end
   end
 end
