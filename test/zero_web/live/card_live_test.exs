@@ -1,6 +1,6 @@
 defmodule ZeroWeb.CardLiveTest do
   use ZeroWeb.ConnCase, async: true
-  alias Zero.Filter
+  alias Zero.CreatorFilter
 
   import Phoenix.LiveViewTest
   import Zero.ListsFixtures
@@ -37,7 +37,7 @@ defmodule ZeroWeb.CardLiveTest do
 
   describe "Index" do
     setup do
-      Filter.creator("")
+      CreatorFilter.put(:Filter, "")
       create_card(nil)
     end
 

@@ -3,7 +3,7 @@ defmodule ZeroWeb.CardLive.Index do
 
   alias Zero.Lists
   alias Zero.Lists.Card
-  alias Zero.Filter
+  alias Zero.CreatorFilter
 
   @impl true
   def mount(params, _session, socket) do
@@ -14,14 +14,14 @@ defmodule ZeroWeb.CardLive.Index do
      socket
      |> assign(:as, Map.get(params, "use_as"))
      |> assign(:list, get_list(params))
-     |> assign(:creator, Filter.creator())}
+     |> assign(:creator, CreatorFilter.get(:Filter))}
   end
 
   defp get_list(params) do
     if Map.get(params, "use_as") == nil do
       Lists.list_cards_as("")
     else
-      Lists.list_cards_as(Filter.creator(), Map.get(params, "use_as"))
+      Lists.list_cards_as(CreatorFilter.get(:Filter), Map.get(params, "use_as"))
     end
   end
 
@@ -55,11 +55,12 @@ defmodule ZeroWeb.CardLive.Index do
   end
 
   def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
-    {:noreply, assign(socket, :list, Lists.list_cards_as(Filter.creator(), socket.assigns.as))}
+    {:noreply,
+     assign(socket, :list, Lists.list_cards_as(CreatorFilter.get(:Filter), socket.assigns.as))}
   end
 
   def handle_info(%{topic: "creator", event: "changed", payload: filter}, socket) do
-    Filter.creator(filter)
+    :ok = CreatorFilter.put(:Filter, filter)
 
     {:noreply,
      assign(socket, :list, Lists.list_cards_as(filter, socket.assigns.as))
@@ -75,7 +76,7 @@ defmodule ZeroWeb.CardLive.Index do
   def handle_event("use_as", %{"use_as" => editor}, socket) do
     {:noreply,
      socket
-     |> assign(:list, Lists.list_cards_as(Filter.creator(), editor))
+     |> assign(:list, Lists.list_cards_as(CreatorFilter.get(:Filter), editor))
      |> assign(:as, editor)}
   end
 end

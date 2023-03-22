@@ -2,7 +2,7 @@ defmodule Zero.CreatorFilter do
   use Agent
 
   def start_link(_) do
-    Agent.start_link(fn -> %{} end, name: __MODULE__)
+    Agent.start_link(fn -> %{Filter: ""} end, name: __MODULE__)
   end
 
   def get(key) do

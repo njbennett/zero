@@ -13,6 +13,10 @@ defmodule Zero.CreatorFilterTest do
       assert CreatorFilter.get(filter) == ""
     end
 
+    test "get/1 returns a default value" do
+      assert CreatorFilter.get(:Filter)
+    end
+
     test "put/2 sets the value for that editor", %{filter: filter} do
       assert CreatorFilter.put(filter, "") == :ok
     end
