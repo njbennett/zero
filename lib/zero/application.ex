@@ -24,7 +24,8 @@ defmodule Zero.Application do
       ZeroWeb.Endpoint,
       # Start a worker by calling: Zero.Worker.start_link(arg)
       # {Zero.Worker, arg}
-      Zero.Filter
+      Zero.Filter,
+      Zero.CreatorFilter
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
