@@ -37,7 +37,7 @@ defmodule ZeroWeb.CardLiveTest do
 
   describe "Index" do
     setup do
-      CreatorFilter.put(:Filter, "")
+      CreatorFilter.put("Setup User", "")
       create_card(nil)
     end
 
@@ -117,7 +117,7 @@ defmodule ZeroWeb.CardLiveTest do
 
       index_live
       |> form("#use-as-form", %{use_as: ""})
-      |> render_change()
+      |> render_submit()
 
       refute render(index_live) =~ card.creators
     end
@@ -133,7 +133,7 @@ defmodule ZeroWeb.CardLiveTest do
 
       index_live
       |> form("#use-as-form", %{use_as: "John Spartan"})
-      |> render_change()
+      |> render_submit()
 
       index_live
       |> form("#creator-filter-form", %{creator_filter: "Edgar"})
@@ -167,7 +167,6 @@ defmodule ZeroWeb.CardLiveTest do
              |> render_submit()
 
       assert_patch(index_live, ~p"/cards?use_as=Setup+User")
-
       html = render(index_live)
       assert html =~ "Card created successfully"
       assert html =~ "some details"
@@ -236,6 +235,26 @@ defmodule ZeroWeb.CardLiveTest do
       |> render_change() =~ "Edgar"
 
       assert render(live_reciever) =~ "Edgar"
+      assert render(live_sender) =~ "Edgar"
+    end
+
+    test "only synchronizes creator filter in sessions that share a Use As", %{
+      conn: conn
+    } do
+      {:ok, live_sender, _html} = start_index(conn)
+      {:ok, live_reciever, _html} = start_index(conn)
+
+      refute render(live_reciever) =~ "Edgar"
+
+      live_reciever
+      |> form("#use-as-form", %{use_as: "Ollie"})
+      |> render_submit()
+
+      live_sender
+      |> form("#creator-filter-form", %{creator_filter: "Edgar"})
+      |> render_change() =~ "Edgar"
+
+      refute render(live_reciever) =~ "Edgar"
       assert render(live_sender) =~ "Edgar"
     end
   end

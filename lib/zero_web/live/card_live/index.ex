@@ -14,14 +14,14 @@ defmodule ZeroWeb.CardLive.Index do
      socket
      |> assign(:as, Map.get(params, "use_as"))
      |> assign(:list, get_list(params))
-     |> assign(:creator, CreatorFilter.get(:Filter))}
+     |> assign(:creator, CreatorFilter.get(Map.get(params, "use_as")))}
   end
 
   defp get_list(params) do
     if Map.get(params, "use_as") == nil do
       Lists.list_cards_as("")
     else
-      Lists.list_cards_as(CreatorFilter.get(:Filter), Map.get(params, "use_as"))
+      Lists.list_cards_as(CreatorFilter.get(Map.get(params, "use_as")), Map.get(params, "use_as"))
     end
   end
 
@@ -55,12 +55,12 @@ defmodule ZeroWeb.CardLive.Index do
   end
 
   def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
-    {:noreply,
-     assign(socket, :list, Lists.list_cards_as(CreatorFilter.get(:Filter), socket.assigns.as))}
+    as = socket.assigns.as
+    {:noreply, assign(socket, :list, Lists.list_cards_as(CreatorFilter.get(as), as))}
   end
 
-  def handle_info(%{topic: "creator", event: "changed", payload: filter}, socket) do
-    :ok = CreatorFilter.put(:Filter, filter)
+  def handle_info(%{topic: "creator", event: "changed", payload: _as}, socket) do
+    filter = CreatorFilter.get(socket.assigns.as)
 
     {:noreply,
      assign(socket, :list, Lists.list_cards_as(filter, socket.assigns.as))
@@ -69,14 +69,16 @@ defmodule ZeroWeb.CardLive.Index do
 
   @impl true
   def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
-    ZeroWeb.Endpoint.broadcast("creator", "changed", filter)
+    :ok = CreatorFilter.put(socket.assigns.as, filter)
+    ZeroWeb.Endpoint.broadcast("creator", "changed", socket.assigns.as)
     {:noreply, socket}
   end
 
   def handle_event("use_as", %{"use_as" => editor}, socket) do
     {:noreply,
      socket
-     |> assign(:list, Lists.list_cards_as(CreatorFilter.get(:Filter), editor))
+     |> assign(:list, Lists.list_cards_as(CreatorFilter.get(editor), editor))
+     |> assign(:creator, CreatorFilter.get(editor))
      |> assign(:as, editor)}
   end
 end

@@ -11,10 +11,14 @@
 </.header>
 
 <div class="mt-4">
-  <.form autocomplete="off" for={%{}} id="use-as-form" phx-change="use_as">
+  <.simple_form autocomplete="off" for={%{}} id="use-as-form" phx-submit="use_as">
     <.input label="Use As" name="use_as" value={@as} />
-  </.form>
+    <:actions>
+      <.button>Manifest As</.button>
+    </:actions>
+  </.simple_form>
 </div>
+
 <div class="mt-4">
   <.form autocomplete="off" for={%{}} id="creator-filter-form" phx-change="change_filter">
     <.input label="Filter by Creator" name="creator_filter" value={@creator} />
@@ -38,7 +42,7 @@
   :if={@live_action in [:new, :edit]}
   id="card-modal"
   show
-  on_cancel={JS.navigate(~p"/cards?use_as_#{@as || ""}")}
+  on_cancel={JS.navigate(~p"/cards?use_as=#{@as || ""}")}
 >
   <.live_component
     module={ZeroWeb.CardLive.FormComponent}
