@@ -151,8 +151,8 @@ defmodule ZeroWeb.CoreComponents do
       role="alert"
       class={[
         "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 shadow-md shadow-zinc-900/5 ring-1",
-        @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
-        @kind == :error && "bg-rose-50 p-3 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
+        @kind == :info && "bg-indigo-50 text-indigo-800 ring-indigo-500 fill-indigo-900",
+        @kind == :error && "bg-orange-50 p-3 text-orange-900 shadow-md ring-orange-500 fill-orange-900"
       ]}
       {@rest}
     >
@@ -365,7 +365,7 @@ defmodule ZeroWeb.CoreComponents do
           "text-zinc-900 focus:border-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-800/5 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
           "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
-          @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
+          @errors != [] && "border-orange-400 focus:border-orange-400 focus:ring-orange-400/10"
         ]}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
@@ -388,7 +388,7 @@ defmodule ZeroWeb.CoreComponents do
           "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
           "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
-          @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
+          @errors != [] && "border-orange-400 focus:border-orange-400 focus:ring-orange-400/10"
         ]}
         {@rest}
       />
@@ -418,8 +418,8 @@ defmodule ZeroWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="phx-no-feedback:hidden mt-3 flex gap-3 text-sm leading-6 text-rose-600">
-      <Heroicons.exclamation_circle mini class="mt-0.5 h-5 w-5 flex-none fill-rose-500" />
+    <p class="phx-no-feedback:hidden mt-3 flex gap-3 text-sm leading-6 text-orange-600">
+      <Heroicons.exclamation_circle mini class="mt-0.5 h-5 w-5 flex-none fill-orange-500" />
       <%= render_slot(@inner_block) %>
     </p>
     """
