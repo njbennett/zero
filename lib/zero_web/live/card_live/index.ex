@@ -4,27 +4,20 @@ defmodule ZeroWeb.CardLive.Index do
   alias Zero.Lists
   alias Zero.Lists.Card
   alias Zero.CreatorFilter
+  alias Zero.Hexagon
 
   @impl true
   def mount(params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
     ZeroWeb.Endpoint.subscribe("creator")
 
+    { as, list, creator } = Hexagon.start_view(params)
+
     {:ok,
      socket
-     |> assign(:as, Map.get(params, "use_as"))
-     |> assign(:list, get_list(params))
-     |> assign(:creator, CreatorFilter.get(Map.get(params, "use_as")))}
-  end
-
-  defp get_list(params) do
-    use_as = Map.get(params, "use_as")
-
-    if use_as == nil do
-      Lists.list_cards_as("")
-    else
-      filtered_list(use_as)
-    end
+     |> assign(:as, as)
+     |> assign(:list, list)
+     |> assign(:creator, creator)}
   end
 
   defp filtered_list(use_as) do
