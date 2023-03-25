@@ -24,4 +24,8 @@ defmodule Zero.Hexagon do
   def filtered_list(use_as) do
     Lists.list_cards_as(CreatorFilter.get(use_as), use_as)
   end
+
+  def get_card!(id) do
+    Lists.get_card!(id)
+  end
 end

@@ -1,7 +1,6 @@
 defmodule ZeroWeb.CardLive.Index do
   use ZeroWeb, :live_view
 
-  alias Zero.Lists
   alias Zero.Lists.Card
   alias Zero.CreatorFilter
   alias Zero.Hexagon
@@ -28,7 +27,7 @@ defmodule ZeroWeb.CardLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Card")
-    |> assign(:card, Lists.get_card!(id))
+    |> assign(:card, Hexagon.get_card!(id))
   end
 
   defp apply_action(socket, :new, _params) do
