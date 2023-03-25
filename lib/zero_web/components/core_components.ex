@@ -152,7 +152,8 @@ defmodule ZeroWeb.CoreComponents do
       class={[
         "fixed hidden top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 shadow-md shadow-zinc-900/5 ring-1",
         @kind == :info && "bg-indigo-50 text-indigo-800 ring-indigo-500 fill-indigo-900",
-        @kind == :error && "bg-orange-50 p-3 text-orange-900 shadow-md ring-orange-500 fill-orange-900"
+        @kind == :error &&
+          "bg-orange-50 p-3 text-orange-900 shadow-md ring-orange-500 fill-orange-900"
       ]}
       {@rest}
     >
@@ -256,7 +257,7 @@ defmodule ZeroWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-600 shadow-md hover:to-indigo-600 hover:from-violet-600 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-gradient-to-tl from-indigo-600 to-fuchsia-600 shadow-md hover:to-indigo-500 hover:from-fuchsia-500 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}
