@@ -3,12 +3,12 @@ defmodule Zero.Hexagon do
   alias Zero.CreatorFilter
 
   def start_view(params) do
-    as = Map.get(params, "use_as")
+    manifestor = Map.get(params, "use_as")
     list = get_list(params)
 
     # I thought that this logic was needed but apparently no test cares
     # creator = CreatorFilter.get(Map.get(params, "use_as"))
-    {as, list, nil}
+    {manifestor, list, nil}
   end
 
   defp get_list(params) do
@@ -27,5 +27,13 @@ defmodule Zero.Hexagon do
 
   def get_card!(id) do
     Lists.get_card!(id)
+  end
+
+  def creator(manifestor) do
+    CreatorFilter.get(manifestor)
+  end
+
+  def creator(manifestor, filter) do
+    CreatorFilter.put(manifestor, filter)
   end
 end

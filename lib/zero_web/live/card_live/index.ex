@@ -2,7 +2,6 @@ defmodule ZeroWeb.CardLive.Index do
   use ZeroWeb, :live_view
 
   alias Zero.Lists.Card
-  alias Zero.CreatorFilter
   alias Zero.Hexagon
 
   @impl true
@@ -54,16 +53,14 @@ defmodule ZeroWeb.CardLive.Index do
   end
 
   def handle_info(%{topic: "creator", event: "changed", payload: _as}, socket) do
-    filter = CreatorFilter.get(socket.assigns.as)
-
     {:noreply,
      assign(socket, :list, Hexagon.filtered_list(socket.assigns.as))
-     |> assign(:creator, filter)}
+     |> assign(:creator, Hexagon.creator(socket.assigns.as))}
   end
 
   @impl true
   def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
-    :ok = CreatorFilter.put(socket.assigns.as, filter)
+    :ok = Hexagon.creator(socket.assigns.as, filter)
     ZeroWeb.Endpoint.broadcast("creator", "changed", socket.assigns.as)
     {:noreply, socket}
   end
@@ -72,7 +69,7 @@ defmodule ZeroWeb.CardLive.Index do
     {:noreply,
      socket
      |> assign(:list, Hexagon.filtered_list(editor))
-     |> assign(:creator, CreatorFilter.get(editor))
+     |> assign(:creator, Hexagon.creator(editor))
      |> assign(:as, editor)}
   end
 end
