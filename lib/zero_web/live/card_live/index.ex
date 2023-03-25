@@ -18,11 +18,17 @@ defmodule ZeroWeb.CardLive.Index do
   end
 
   defp get_list(params) do
-    if Map.get(params, "use_as") == nil do
+    use_as = Map.get(params, "use_as")
+
+    if use_as == nil do
       Lists.list_cards_as("")
     else
-      Lists.list_cards_as(CreatorFilter.get(Map.get(params, "use_as")), Map.get(params, "use_as"))
+      filtered_list(use_as)
     end
+  end
+
+  defp filtered_list(use_as) do
+    Lists.list_cards_as(CreatorFilter.get(use_as), use_as)
   end
 
   @impl true
@@ -56,7 +62,7 @@ defmodule ZeroWeb.CardLive.Index do
 
   def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
     as = socket.assigns.as
-    {:noreply, assign(socket, :list, Lists.list_cards_as(CreatorFilter.get(as), as))}
+    {:noreply, assign(socket, :list, filtered_list(as))}
   end
 
   def handle_info(%{topic: "creator", event: "changed", payload: _as}, socket) do
@@ -77,7 +83,7 @@ defmodule ZeroWeb.CardLive.Index do
   def handle_event("use_as", %{"use_as" => editor}, socket) do
     {:noreply,
      socket
-     |> assign(:list, Lists.list_cards_as(CreatorFilter.get(editor), editor))
+     |> assign(:list, filtered_list(editor))
      |> assign(:creator, CreatorFilter.get(editor))
      |> assign(:as, editor)}
   end
