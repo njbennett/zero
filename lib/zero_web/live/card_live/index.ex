@@ -67,6 +67,7 @@ defmodule ZeroWeb.CardLive.Index do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("use_as", %{"use_as" => editor}, socket) do
     {list, _creator} = Hexagon.update_manifestor(editor)
 

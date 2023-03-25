@@ -14,7 +14,6 @@ defmodule Zero.Hexagon do
   def update_manifestor(manifestor) do
     list = filtered_list(manifestor)
 
-    # thought this was required too but again, no test fails
     creator = creator(manifestor)
     {list, creator}
   end
