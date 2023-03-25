@@ -77,4 +77,12 @@ defmodule ZeroWeb.CardLive.Index do
      |> assign(:creator, nil)
      |> assign(:as, editor)}
   end
+
+  def handle_event("toggle_show_finished", %{"manifestor" => manifestor}, socket) do
+    list = Hexagon.toggle_finished(manifestor)
+
+    {:noreply,
+     socket
+     |> assign(:list, list)}
+  end
 end

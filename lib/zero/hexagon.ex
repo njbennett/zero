@@ -18,6 +18,11 @@ defmodule Zero.Hexagon do
     {list, creator}
   end
 
+  def toggle_finished(manifestor) do
+    # filtered_list(manifestor)
+    manifestor
+  end
+
   defp get_list(params) do
     use_as = Map.get(params, "use_as")
 
