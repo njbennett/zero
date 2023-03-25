@@ -53,9 +53,11 @@ defmodule ZeroWeb.CardLive.Index do
   end
 
   def handle_info(%{topic: "creator", event: "changed", payload: _as}, socket) do
+    {list, creator} = Hexagon.update_manifestor(socket.assigns.as)
+
     {:noreply,
-     assign(socket, :list, Hexagon.filtered_list(socket.assigns.as))
-     |> assign(:creator, Hexagon.creator(socket.assigns.as))}
+     assign(socket, :list, list)
+     |> assign(:creator, creator)}
   end
 
   @impl true
@@ -66,10 +68,12 @@ defmodule ZeroWeb.CardLive.Index do
   end
 
   def handle_event("use_as", %{"use_as" => editor}, socket) do
+    {list, _creator} = Hexagon.update_manifestor(editor)
+
     {:noreply,
      socket
-     |> assign(:list, Hexagon.filtered_list(editor))
-     |> assign(:creator, Hexagon.creator(editor))
+     |> assign(:list, list)
+     |> assign(:creator, nil)
      |> assign(:as, editor)}
   end
 end

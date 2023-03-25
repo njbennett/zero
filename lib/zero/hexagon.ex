@@ -11,6 +11,14 @@ defmodule Zero.Hexagon do
     {manifestor, list, nil}
   end
 
+  def update_manifestor(manifestor) do
+    list = filtered_list(manifestor)
+
+    # thought this was required too but again, no test fails
+    creator = creator(manifestor)
+    {list, creator}
+  end
+
   defp get_list(params) do
     use_as = Map.get(params, "use_as")
 
@@ -29,7 +37,7 @@ defmodule Zero.Hexagon do
     Lists.get_card!(id)
   end
 
-  def creator(manifestor) do
+  defp creator(manifestor) do
     CreatorFilter.get(manifestor)
   end
 
