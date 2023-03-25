@@ -11,17 +11,13 @@ defmodule ZeroWeb.CardLive.Index do
     ZeroWeb.Endpoint.subscribe("cards")
     ZeroWeb.Endpoint.subscribe("creator")
 
-    { as, list, creator } = Hexagon.start_view(params)
+    {as, list, creator} = Hexagon.start_view(params)
 
     {:ok,
      socket
      |> assign(:as, as)
      |> assign(:list, list)
      |> assign(:creator, creator)}
-  end
-
-  defp filtered_list(use_as) do
-    Lists.list_cards_as(CreatorFilter.get(use_as), use_as)
   end
 
   @impl true
@@ -55,14 +51,14 @@ defmodule ZeroWeb.CardLive.Index do
 
   def handle_info(%{topic: "cards", event: "saved", payload: _card}, socket) do
     as = socket.assigns.as
-    {:noreply, assign(socket, :list, filtered_list(as))}
+    {:noreply, assign(socket, :list, Hexagon.filtered_list(as))}
   end
 
   def handle_info(%{topic: "creator", event: "changed", payload: _as}, socket) do
     filter = CreatorFilter.get(socket.assigns.as)
 
     {:noreply,
-     assign(socket, :list, Lists.list_cards_as(filter, socket.assigns.as))
+     assign(socket, :list, Hexagon.filtered_list(socket.assigns.as))
      |> assign(:creator, filter)}
   end
 
@@ -76,7 +72,7 @@ defmodule ZeroWeb.CardLive.Index do
   def handle_event("use_as", %{"use_as" => editor}, socket) do
     {:noreply,
      socket
-     |> assign(:list, filtered_list(editor))
+     |> assign(:list, Hexagon.filtered_list(editor))
      |> assign(:creator, CreatorFilter.get(editor))
      |> assign(:as, editor)}
   end

@@ -8,7 +8,7 @@ defmodule Zero.Hexagon do
 
     # I thought that this logic was needed but apparently no test cares
     # creator = CreatorFilter.get(Map.get(params, "use_as"))
-    { as, list, nil }
+    {as, list, nil}
   end
 
   defp get_list(params) do
@@ -21,7 +21,7 @@ defmodule Zero.Hexagon do
     end
   end
 
-  defp filtered_list(use_as) do
+  def filtered_list(use_as) do
     Lists.list_cards_as(CreatorFilter.get(use_as), use_as)
   end
 end
