@@ -8,16 +8,7 @@ defmodule Zero.Lists do
 
   alias Zero.Lists.Card
 
-  @doc """
-  Returns the list of cards.
-
-  ## Examples
-
-      iex> list_cards()
-      [%Card{}, ...]
-
-  """
-  def list_cards do
+  defp list_cards do
     query =
       from c in Card,
         order_by: [asc: c.inserted_at]
@@ -25,16 +16,7 @@ defmodule Zero.Lists do
     Repo.all(query)
   end
 
-  @doc """
-  Returns the list of cards, filtered by creator.
-
-  ## Examples
-
-      iex> list_cards("Edgar")
-      [%Card{}, ...]
-
-  """
-  def list_cards(creator_substring) do
+  defp list_cards(creator_substring) do
     query =
       from c in Card,
         where: like(c.creators, ^"%#{creator_substring}%"),
