@@ -59,6 +59,25 @@ defmodule Zero.Lists do
   end
 
   @doc """
+  Returns only unfinished cards
+  Otherwise should behave like list_cards/2
+  """
+
+  def list_unfinished_cards(creator, editor) do
+    if editor == "" do
+      []
+    else
+      query =
+        from c in Card,
+        where: c.finished == false,
+        where: like(c.creators, ^"%#{creator}%"),
+        order_by: [asc: c.inserted_at]
+
+      Repo.all(query)
+    end
+  end
+
+  @doc """
   Gets a single card.
 
   Raises `Ecto.NoResultsError` if the Card does not exist.

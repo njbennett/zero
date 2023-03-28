@@ -49,6 +49,34 @@ defmodule Zero.ListsTest do
       assert Lists.list_cards("Edgar", "Edgar") == [edgar_card]
     end
 
+    test "list_unfinished_cards/2 returns only unfinished cards" do
+      _finished_card = card_fixture(%{finished: true})
+      unfinished_card = card_fixture(%{finished: false})
+
+      assert Lists.list_unfinished_cards("", "some editor") == [unfinished_card]
+    end
+
+    test "list_unfinished_cards/2 returns all cards in the order they were created" do
+      first_time = NaiveDateTime.utc_now()
+      second_time = first_time |> NaiveDateTime.add(1, :second)
+      card2 = card_fixture(%{inserted_at: second_time})
+      card1 = card_fixture(%{inserted_at: first_time})
+
+      assert Lists.list_unfinished_cards("", "some editor") == [card1, card2]
+    end
+
+    test "list_unfinished_cards/2 returns all cards by a specific creator" do
+      _standard_card = card_fixture()
+      edgar_card = card_fixture(%{creators: "Edgar Friendly"})
+
+      assert Lists.list_unfinished_cards("Edgar", "some editor") == [edgar_card]
+    end
+
+    test "list_unfinished_cards/2 returns an empty list when 'as' is an empty string" do
+      card_fixture()
+      assert Lists.list_unfinished_cards("", "") == []
+    end
+
     test "get_card!/1 returns the card with given id" do
       card = card_fixture()
       assert Lists.get_card!(card.id) == card
