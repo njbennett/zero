@@ -1,6 +1,7 @@
 defmodule Zero.Hexagon do
   alias Zero.Lists
   alias Zero.CreatorFilter
+  alias Zero.FinishedFilter
 
   def start_view(params) do
     manifestor = Map.get(params, "use_as")
@@ -19,8 +20,9 @@ defmodule Zero.Hexagon do
   end
 
   def toggle_finished(manifestor) do
+    FinishedFilter.toggle(manifestor)
     # filtered_list(manifestor)
-    manifestor
+    :ok
   end
 
   defp get_list(params) do
@@ -34,7 +36,11 @@ defmodule Zero.Hexagon do
   end
 
   def filtered_list(use_as) do
-    Lists.list_cards(CreatorFilter.get(use_as), use_as)
+    if FinishedFilter.get(use_as) == true do
+      Lists.list_cards(use_as)
+    else
+      Lists.list_unfinished_cards(CreatorFilter.get(use_as), use_as)
+    end
   end
 
   def get_card!(id) do

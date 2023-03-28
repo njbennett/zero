@@ -8,6 +8,7 @@ defmodule ZeroWeb.CardLive.Index do
   def mount(params, _session, socket) do
     ZeroWeb.Endpoint.subscribe("cards")
     ZeroWeb.Endpoint.subscribe("creator")
+    ZeroWeb.Endpoint.subscribe("finished")
 
     {as, list, creator} = Hexagon.start_view(params)
 
@@ -60,6 +61,12 @@ defmodule ZeroWeb.CardLive.Index do
      |> assign(:creator, creator)}
   end
 
+  def handle_info(%{topic: "finished", event: "changed", payload: _as}, socket) do
+    as = socket.assigns.as
+    list = Hexagon.filtered_list(as)
+    {:noreply, assign(dbg(socket), :list, list)}
+  end
+
   @impl true
   def handle_event("change_filter", %{"creator_filter" => filter}, socket) do
     :ok = Hexagon.creator(socket.assigns.as, filter)
@@ -78,11 +85,11 @@ defmodule ZeroWeb.CardLive.Index do
      |> assign(:as, editor)}
   end
 
-  def handle_event("toggle_show_finished", %{"manifestor" => manifestor}, socket) do
-    list = Hexagon.toggle_finished(manifestor)
+  @impl true
+  def handle_event("toggle_show_finished", %{}, socket) do
+    :ok = Hexagon.toggle_finished(socket.assigns.as)
+    ZeroWeb.Endpoint.broadcast("finished", "changed", socket.assigns.as)
 
-    {:noreply,
-     socket
-     |> assign(:list, list)}
+    {:noreply, socket }
   end
 end

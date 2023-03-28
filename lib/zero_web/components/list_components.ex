@@ -52,7 +52,7 @@ defmodule ZeroWeb.ListComponents do
           <tr
             :for={row <- @rows}
             id={@row_id && @row_id.(row)}
-            class={["group hover:bg-zinc-50", @finished?.(row) && "hidden finished"]}
+            class={["group hover:bg-zinc-50"]}
             phx-click={@row_click && @row_click.(row)}
           >
             <td

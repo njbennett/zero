@@ -49,12 +49,12 @@ defmodule Zero.ListsTest do
       assert Lists.list_cards("Edgar", "Edgar") == [edgar_card]
     end
 
-    test "list_unfinished_cards/2 returns only unfinished cards" do
-      _finished_card = card_fixture(%{finished: true})
-      unfinished_card = card_fixture(%{finished: false})
+  test "list_unfinished_cards/2 returns only unfinished cards" do
+    _finished_card = card_fixture(%{finished: true})
+    unfinished_card = card_fixture(%{finished: false})
 
-      assert Lists.list_unfinished_cards("", "some editor") == [unfinished_card]
-    end
+    assert Lists.list_unfinished_cards("", "some editor") == [unfinished_card]
+  end
 
     test "list_unfinished_cards/2 returns all cards in the order they were created" do
       first_time = NaiveDateTime.utc_now()
