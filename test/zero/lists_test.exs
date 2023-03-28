@@ -16,37 +16,37 @@ defmodule Zero.ListsTest do
       creators: "Edgar Friendly"
     }
 
-    test "list_cards_as/2 returns all cards in the order they were created" do
+    test "list_cards/2 returns all cards in the order they were created" do
       first_time = NaiveDateTime.utc_now()
       second_time = first_time |> NaiveDateTime.add(1, :second)
       card2 = card_fixture(%{inserted_at: second_time})
       card1 = card_fixture(%{inserted_at: first_time})
 
-      assert Lists.list_cards_as("", "some editor") == [card1, card2]
+      assert Lists.list_cards("", "some editor") == [card1, card2]
     end
 
-    test "list_cards_as/2 returns all cards by a specific creator" do
+    test "list_cards/2 returns all cards by a specific creator" do
       _standard_card = card_fixture()
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})
 
-      assert Lists.list_cards_as("Edgar", "some editor") == [edgar_card]
+      assert Lists.list_cards("Edgar", "some editor") == [edgar_card]
     end
 
-    test "list_cards_as/1 returns cards when 'as' is not nil" do
+    test "list_cards/1 returns cards when 'as' is not nil" do
       card = card_fixture()
-      assert Lists.list_cards_as("Edgar") == [card]
+      assert Lists.list_cards("Edgar") == [card]
     end
 
-    test "list_cards_as/1 returns an empty list when 'as' is an empty string" do
+    test "list_cards/1 returns an empty list when 'as' is an empty string" do
       card_fixture()
-      assert Lists.list_cards_as("") == []
+      assert Lists.list_cards("") == []
     end
 
-    test "list_cards_as/2 filters the cards it returns by creator" do
+    test "list_cards/2 filters the cards it returns by creator" do
       _standard_card = card_fixture()
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})
 
-      assert Lists.list_cards_as("Edgar", "Edgar") == [edgar_card]
+      assert Lists.list_cards("Edgar", "Edgar") == [edgar_card]
     end
 
     test "get_card!/1 returns the card with given id" do

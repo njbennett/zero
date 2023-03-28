@@ -27,14 +27,14 @@ defmodule Zero.Hexagon do
     use_as = Map.get(params, "use_as")
 
     if use_as == nil do
-      Lists.list_cards_as("")
+      Lists.list_cards("")
     else
       filtered_list(use_as)
     end
   end
 
   def filtered_list(use_as) do
-    Lists.list_cards_as(CreatorFilter.get(use_as), use_as)
+    Lists.list_cards(CreatorFilter.get(use_as), use_as)
   end
 
   def get_card!(id) do

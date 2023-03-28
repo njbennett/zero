@@ -16,26 +16,17 @@ defmodule Zero.Lists do
     Repo.all(query)
   end
 
-  defp list_cards(creator_substring) do
-    query =
-      from c in Card,
-        where: like(c.creators, ^"%#{creator_substring}%"),
-        order_by: [asc: c.inserted_at]
-
-    Repo.all(query)
-  end
-
   @doc """
   Returns the list of cards, unless it's passed ""
   Then it retruns an empty list.
 
   ## Examples
 
-  iex> list_cards_as("Edgar")
+  iex> list_cards("Edgar")
   [%Card{}, ...]
 
   """
-  def list_cards_as(editor) do
+  def list_cards(editor) do
     if editor == "" do
       []
     else
@@ -50,15 +41,20 @@ defmodule Zero.Lists do
 
   ## Examples
 
-  iex> list_cards_as("Edgar", "Edgar")
+  iex> list_cards("Edgar", "Edgar")
   [%Card{}, ...]
 
   """
-  def list_cards_as(creator, editor) do
+  def list_cards(creator, editor) do
     if editor == "" do
       []
     else
-      list_cards(creator)
+      query =
+        from c in Card,
+          where: like(c.creators, ^"%#{creator}%"),
+          order_by: [asc: c.inserted_at]
+
+      Repo.all(query)
     end
   end
 
