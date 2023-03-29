@@ -16,7 +16,9 @@ defmodule ZeroWeb.CardLive.Index do
      socket
      |> assign(:as, as)
      |> assign(:list, list)
-     |> assign(:creator, creator)}
+     |> assign(:creator, creator)
+     |> assign(:creator_form_focused, false)
+    }
   end
 
   @impl true
@@ -93,5 +95,13 @@ defmodule ZeroWeb.CardLive.Index do
     ZeroWeb.Endpoint.broadcast("finished", "changed", socket.assigns.as)
 
     {:noreply, socket}
+  end
+
+  def handle_event("focus-creator-button", %{}, socket) do
+    {:noreply, assign(socket, :creator_form_focused, true)}
+  end
+
+  def handle_event("defocus-creator-button", %{}, socket) do
+    {:noreply, assign(socket, :creator_form_focused, false)}
   end
 end

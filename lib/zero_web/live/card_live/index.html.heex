@@ -20,9 +20,19 @@
 </div>
 
 <div class="mt-4">
-  <.form autocomplete="off" for={%{}} id="creator-filter-form" phx-change="change_filter">
-    <.input label="Filter by Creator" name="creator_filter" value={@creator} />
-  </.form>
+  <%= if @creator == nil || @creator == "" || @creator_form_focused do %>
+    <.form autocomplete="off" for={%{}} id="creator-filter-form" phx-change="change_filter">
+      <.input
+        label="Filter by Creator"
+        name="creator_filter"
+        value={@creator}
+        phx-click={JS.push("focus-creator-button")}
+        phx-click-away={JS.push("defocus-creator-button")}
+        />
+    </.form>
+  <% else %>
+    <.button phx-click={JS.push("focus-creator-button")}><%= @creator %></.button>
+  <% end %>
 </div>
 
 <.filter_table
