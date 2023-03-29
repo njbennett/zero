@@ -73,9 +73,9 @@ defmodule Zero.Lists do
     else
       query =
         from c in Card,
-        where: c.finished == false,
-        where: like(c.creators, ^"%#{creator}%"),
-        order_by: [asc: c.inserted_at]
+          where: c.finished == false,
+          where: like(c.creators, ^"%#{creator}%"),
+          order_by: [asc: c.inserted_at]
 
       Repo.all(query)
     end

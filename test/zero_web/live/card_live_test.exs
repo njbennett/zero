@@ -142,6 +142,16 @@ defmodule ZeroWeb.CardLiveTest do
       assert render(index_live) =~ "John Spartan"
     end
 
+    test "sets the use_as url param when we click Manifest As", %{conn: conn} do
+      {:ok, index_live, _html} = start_index(conn)
+
+      index_live
+      |> form("#use-as-form", %{use_as: "set param test user"})
+      |> render_submit()
+
+      assert_patch(index_live, ~p"/cards?use_as=set+param+test+user")
+    end
+
     test "hides finished cards", %{conn: conn} do
       finished_card = card_fixture(%{finished: true, name: "finished card"})
       {:ok, index_live, _html} = start_index(conn)

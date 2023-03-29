@@ -77,12 +77,14 @@ defmodule ZeroWeb.CardLive.Index do
   @impl true
   def handle_event("use_as", %{"use_as" => editor}, socket) do
     {list, _creator} = Hexagon.update_manifestor(editor)
+    query = URI.encode_query(%{"use_as" => editor}, :www_form)
 
     {:noreply,
      socket
      |> assign(:list, list)
      |> assign(:creator, nil)
-     |> assign(:as, editor)}
+     |> assign(:as, editor)
+     |> push_patch(to: "/cards?#{query}")}
   end
 
   @impl true
@@ -90,6 +92,6 @@ defmodule ZeroWeb.CardLive.Index do
     :ok = Hexagon.toggle_finished(socket.assigns.as)
     ZeroWeb.Endpoint.broadcast("finished", "changed", socket.assigns.as)
 
-    {:noreply, socket }
+    {:noreply, socket}
   end
 end
