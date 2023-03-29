@@ -16,6 +16,10 @@ defmodule Zero.Lists do
     Repo.all(query)
   end
 
+  defp exists(editor) do
+    editor == "" || editor == nil
+  end
+
   @doc """
   Returns the list of cards, unless it's passed ""
   Then it retruns an empty list.
@@ -27,7 +31,7 @@ defmodule Zero.Lists do
 
   """
   def list_cards(editor) do
-    if editor == "" do
+    if editor |> exists() do
       []
     else
       list_cards()
@@ -46,7 +50,7 @@ defmodule Zero.Lists do
 
   """
   def list_cards(creator, editor) do
-    if editor == "" do
+    if editor |> exists() do
       []
     else
       query =
@@ -64,7 +68,7 @@ defmodule Zero.Lists do
   """
 
   def list_unfinished_cards(creator, editor) do
-    if editor == "" do
+    if editor |> exists() do
       []
     else
       query =

@@ -42,6 +42,11 @@ defmodule Zero.ListsTest do
       assert Lists.list_cards("") == []
     end
 
+    test "list_cards/1 returns an empty list when 'as' is nil" do
+      card_fixture()
+      assert Lists.list_cards(nil) == []
+    end
+
     test "list_cards/2 filters the cards it returns by creator" do
       _standard_card = card_fixture()
       edgar_card = card_fixture(%{creators: "Edgar Friendly"})

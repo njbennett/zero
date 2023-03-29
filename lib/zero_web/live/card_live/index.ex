@@ -64,7 +64,7 @@ defmodule ZeroWeb.CardLive.Index do
   def handle_info(%{topic: "finished", event: "changed", payload: _as}, socket) do
     as = socket.assigns.as
     list = Hexagon.filtered_list(as)
-    {:noreply, assign(dbg(socket), :list, list)}
+    {:noreply, assign(socket, :list, list)}
   end
 
   @impl true
