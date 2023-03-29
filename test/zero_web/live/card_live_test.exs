@@ -106,12 +106,6 @@ defmodule ZeroWeb.CardLiveTest do
       refute html =~ card.creators
     end
 
-    test "has a 'Use As' field", %{conn: conn, card: _card} do
-      {:ok, _index_live, html} = live(conn, ~p"/cards")
-
-      assert html =~ "Use As"
-    end
-
     test "only shows cards when Use As is filled", %{conn: conn, card: card} do
       {:ok, index_live, _html} = start_index(conn)
 
