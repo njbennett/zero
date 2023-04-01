@@ -1,8 +1,0 @@
-Postgres cluster zero-solutions-db created
-  Username:    postgres
-  Password:    ftSJr2rHqbSFuLZ
-  Hostname:    zero-solutions-db.internal
-  Flycast:     fdaa:1:79d7:0:1::2
-  Proxy port:  5432
-  Postgres port:  5433
-  Connection string: postgres://postgres:ftSJr2rHqbSFuLZ@[fdaa:1:79d7:0:1::2]:5432
