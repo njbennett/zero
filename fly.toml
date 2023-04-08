@@ -1,17 +1,18 @@
-# fly.toml file generated for zero-solutions on 2023-02-26T20:48:38-08:00
+# fly.toml file generated for zero-solutions on 2023-04-08T11:22:55-07:00
 
 app = "zero-solutions"
 kill_signal = "SIGTERM"
 kill_timeout = 5
+primary_region = "sjc"
 processes = []
 
 [deploy]
   release_command = "/app/bin/migrate"
 
 [env]
+  OTEL_SERVICE_NAME = "zero"
   PHX_HOST = "zero-solutions.fly.dev"
   PORT = "8080"
-  OTEL_SERVICE_NAME="zero"
 
 [experimental]
   auto_rollback = true
